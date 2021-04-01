@@ -1,10 +1,12 @@
+import { mockApplicationModel } from '@/domain/test/mock-application'
 import { AddApplication } from '@/domain/usecases/application/add-application'
-import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
+import { badRequest, ok, serverError } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validation } from '@/presentation/protocols/validation'
 import { mockAddApplication } from '@/presentation/test/mock-add-application'
 import { mockValidation } from '@/presentation/test/mock-validation'
 import { AddApplicationController } from './add-application-controller'
+import MockDate from 'mockdate'
 
 type SutTypes = {
   sut: AddApplicationController
@@ -29,6 +31,12 @@ const mockSut = (): SutTypes => {
 }
 
 describe('AddApplication Controller', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+  afterAll(() => {
+    MockDate.reset()
+  })
   test('Should call Validation with correct values', async () => {
     const { sut, validationStub } = mockSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
@@ -56,5 +64,11 @@ describe('AddApplication Controller', () => {
     const httpRequest = mockRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+  test('Should return 200 on success', async () => {
+    const { sut } = mockSut()
+    const httpRequest = mockRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(ok(mockApplicationModel()))
   })
 })

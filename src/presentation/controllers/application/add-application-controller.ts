@@ -15,8 +15,8 @@ export class AddApplicationController implements Controller {
       const error = this.validation.validate(httpRequest.body)
       if (error) return badRequest(error)
       const { name } = httpRequest.body
-      await this.addApplication.add({ name })
-      return ok({})
+      const application = await this.addApplication.add({ name })
+      return ok(application)
     } catch (error) {
       return serverError(error)
     }
