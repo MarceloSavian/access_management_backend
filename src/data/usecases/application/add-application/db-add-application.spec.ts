@@ -23,4 +23,10 @@ describe('AddApplication usecase', () => {
     await sut.add(mockApplicationParams())
     expect(addSpy).toHaveBeenCalledWith(mockApplicationParams())
   })
+  test('Should throw if AddApllicationRepository throws', async () => {
+    const { sut, addApplicationRepositoryStub } = mockSut()
+    jest.spyOn(addApplicationRepositoryStub, 'add').mockRejectedValueOnce(new Error())
+    const promise = sut.add(mockApplicationParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
