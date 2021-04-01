@@ -1,0 +1,19 @@
+{
+  "name": "access_management_backend",
+  "version": "1.0.0",
+  "description": "Micro service backend to access management",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarceloSavian/access_management_backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MarceloSavian/access_management_backend/issues"
+  },
+  "homepage": "https://github.com/MarceloSavian/access_management_backend#readme"
+}
