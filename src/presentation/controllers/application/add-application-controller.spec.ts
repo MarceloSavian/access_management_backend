@@ -1,12 +1,15 @@
+import { AddApplication } from '@/domain/usecases/application/add-application'
 import { badRequest } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validation } from '@/presentation/protocols/validation'
+import { mockAddApplication } from '@/presentation/test/mock-add-application'
 import { mockValidation } from '@/presentation/test/mock-validation'
 import { AddApplicationController } from './add-application-controller'
 
 type SutTypes = {
   sut: AddApplicationController
   validationStub: Validation
+  addApplicationStub: AddApplication
 }
 
 const mockRequest = (): HttpRequest => ({
@@ -17,9 +20,11 @@ const mockRequest = (): HttpRequest => ({
 
 const mockSut = (): SutTypes => {
   const validationStub = mockValidation()
+  const addApplicationStub = mockAddApplication()
   return {
-    sut: new AddApplicationController(validationStub),
-    validationStub
+    sut: new AddApplicationController(validationStub, addApplicationStub),
+    validationStub,
+    addApplicationStub
   }
 }
 
@@ -37,5 +42,12 @@ describe('AddApplication Controller', () => {
     const httpRequest = mockRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(badRequest(new Error()))
+  })
+  test('Should call AddApplication with correct values', async () => {
+    const { sut, addApplicationStub } = mockSut()
+    const addSpy = jest.spyOn(addApplicationStub, 'add')
+    const httpRequest = mockRequest()
+    await sut.handle(httpRequest)
+    expect(addSpy).toHaveBeenCalledWith({ name: httpRequest.body.name })
   })
 })
