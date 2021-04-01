@@ -71,4 +71,10 @@ describe('AddApplication usecase', () => {
       }
     )
   })
+  test('Should throw if UpdateApllicationRepository throws', async () => {
+    const { sut, updateApplicationRepositoryStub } = mockSut()
+    jest.spyOn(updateApplicationRepositoryStub, 'update').mockRejectedValueOnce(new Error())
+    const promise = sut.add(mockApplicationParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
