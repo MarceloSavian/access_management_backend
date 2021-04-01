@@ -40,4 +40,10 @@ describe('AddApplication usecase', () => {
     await sut.add(mockApplicationParams())
     expect(encryptSpy).toHaveBeenCalledWith({ application: mockApplicationModel().id })
   })
+  test('Should throw if Hasher throws', async () => {
+    const { sut, hasherStub } = mockSut()
+    jest.spyOn(hasherStub, 'hash').mockRejectedValueOnce(new Error())
+    const promise = sut.add(mockApplicationParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
