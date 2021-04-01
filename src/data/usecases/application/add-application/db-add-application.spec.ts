@@ -77,4 +77,9 @@ describe('AddApplication usecase', () => {
     const promise = sut.add(mockApplicationParams())
     await expect(promise).rejects.toThrow()
   })
+  test('Should return an application on success', async () => {
+    const { sut } = mockSut()
+    const application = await sut.add(mockApplicationParams())
+    expect(application).toEqual(mockApplicationModel())
+  })
 })
