@@ -1,5 +1,5 @@
 import { AddApplication } from '@/domain/usecases/application/add-application'
-import { badRequest } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validation } from '@/presentation/protocols/validation'
 import { mockAddApplication } from '@/presentation/test/mock-add-application'
@@ -48,6 +48,13 @@ describe('AddApplication Controller', () => {
     const addSpy = jest.spyOn(addApplicationStub, 'add')
     const httpRequest = mockRequest()
     await sut.handle(httpRequest)
-    expect(addSpy).toHaveBeenCalledWith({ name: httpRequest.body.name })
+    expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+  test('Should return 500 if AddApplication throws', async () => {
+    const { sut, addApplicationStub } = mockSut()
+    jest.spyOn(addApplicationStub, 'add').mockRejectedValueOnce(new Error())
+    const httpRequest = mockRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
