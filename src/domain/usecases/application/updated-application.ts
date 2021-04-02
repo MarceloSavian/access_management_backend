@@ -1,3 +1,4 @@
-import { ApplicationModel } from '@/domain/models/application'
-
-export type UpdateApplicationParams = Omit<ApplicationModel, 'id'>
+export type UpdateApplicationParams = {
+  name: string
+  token: string
+}
