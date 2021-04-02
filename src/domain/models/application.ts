@@ -1,5 +1,5 @@
 export type ApplicationModel = {
-  id: string
+  id: number
   name: string
   token: string
   createdAt: Date

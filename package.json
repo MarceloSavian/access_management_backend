@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/MarceloSavian/access_management_backend#readme",
   "devDependencies": {
+    "@databases/pg-test": "^3.0.0",
     "@types/bcrypt": "^3.0.0",
     "@types/jest": "^26.0.22",
     "@types/node": "^14.14.37",
@@ -44,6 +45,9 @@
     "ts-jest": "^26.5.4"
   },
   "dependencies": {
-    "bcrypt": "^5.0.1"
+    "bcrypt": "^5.0.1",
+    "pg": "^8.5.1",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.32"
   }
 }

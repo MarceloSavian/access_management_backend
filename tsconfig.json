@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "experimentalDecorators": true,
         "types": ["jest", "node"],
         "outDir": "dist",
         "module": "commonjs",
@@ -11,7 +12,8 @@
         "baseUrl": "src",
         "paths": {
             "@/*": ["*"]
-        }
+        },
+        "strict": false
     },
     "include": [
         "src"
