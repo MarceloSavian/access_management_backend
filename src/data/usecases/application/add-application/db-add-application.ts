@@ -13,14 +13,12 @@ export class DbAddApplication implements AddApplication {
 
   async add (applicationParams: AddApplicationParams): Promise<ApplicationModel> {
     const application = await this.addApplicationRepository.add(applicationParams)
-    const token = await this.hasher.hash({ application: application.id })
+    const token = await this.hasher.hash(String(application.id))
     return await this.updateApplicationRepository.update(
       application.id,
       {
         name: application.name,
-        token,
-        createdAt: application.createdAt,
-        updatedAt: new Date()
+        token
       }
     )
   }
