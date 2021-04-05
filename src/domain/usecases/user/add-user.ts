@@ -10,5 +10,5 @@ export type AddUserParams = {
 }
 
 export interface AddUser {
-  add: (user: AddUserParams) => Promise<UserModel>
+  add: (user: AddUserParams) => Promise<UserModel | null>
 }
