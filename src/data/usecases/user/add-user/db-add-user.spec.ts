@@ -24,4 +24,11 @@ describe('AddUser UseCase', () => {
     await sut.add(mockUserParams())
     expect(encryptSpy).toHaveBeenCalledWith(mockUserParams().password)
   })
+  test('Should throw if Hasher throws', async () => {
+    const { sut, hasherStub } = mockSut()
+
+    jest.spyOn(hasherStub, 'hash').mockRejectedValueOnce(new Error())
+    const promise = sut.add(mockUserParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
