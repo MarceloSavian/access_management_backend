@@ -4,5 +4,4 @@ export type UserModel = {
   email: string
   password: string
   application: number
-  roles: number[]
 }

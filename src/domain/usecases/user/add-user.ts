@@ -4,7 +4,6 @@ export type AddUserParams = {
   name: string
   email: string
   password: string
-  confirmedPassword: string
   application: number
   roles: number[]
 }

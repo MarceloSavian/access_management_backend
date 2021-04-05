@@ -1,7 +1,8 @@
 import { Hasher } from '@/data/protocols/criptography/hasher'
+import { AddUserRepository } from '@/data/protocols/db/user/add-user-repository'
 import { LoadUserByEmailAndApplicationRepository } from '@/data/protocols/db/user/load-user-by-email-and-application-repository'
 import { mockHasher } from '@/data/test/mock-criptography'
-import { mockLoadUserByEmailAndApplicationRepository } from '@/data/test/mock-db-user'
+import { mockAddUserRepository, mockLoadUserByEmailAndApplicationRepository } from '@/data/test/mock-db-user'
 import { mockUserModel, mockUserParams } from '@/domain/test/mock-user'
 import { DbAddUser } from './db-add-user'
 
@@ -9,16 +10,19 @@ type SutTypes = {
   sut: DbAddUser
   hasherStub: Hasher
   loadUserByEmailAndApplicationRepositoryStub: LoadUserByEmailAndApplicationRepository
+  addUserRepositoryStub: AddUserRepository
 }
 
 const mockSut = (): SutTypes => {
   const hasherStub = mockHasher()
+  const addUserRepositoryStub = mockAddUserRepository()
   const loadUserByEmailAndApplicationRepositoryStub = mockLoadUserByEmailAndApplicationRepository()
   jest.spyOn(loadUserByEmailAndApplicationRepositoryStub, 'loadUserByEmailAndApplication').mockResolvedValue(null)
   return {
-    sut: new DbAddUser(hasherStub, loadUserByEmailAndApplicationRepositoryStub),
+    sut: new DbAddUser(hasherStub, loadUserByEmailAndApplicationRepositoryStub, addUserRepositoryStub),
     hasherStub,
-    loadUserByEmailAndApplicationRepositoryStub
+    loadUserByEmailAndApplicationRepositoryStub,
+    addUserRepositoryStub
   }
 }
 
@@ -56,5 +60,15 @@ describe('AddUser UseCase', () => {
     jest.spyOn(loadUserByEmailAndApplicationRepositoryStub, 'loadUserByEmailAndApplication').mockRejectedValueOnce(new Error())
     const promise = sut.add(mockUserParams())
     await expect(promise).rejects.toThrow()
+  })
+  test('Should call AddUserRepository with correct values', async () => {
+    const { sut, addUserRepositoryStub } = mockSut()
+
+    const loadSpy = jest.spyOn(addUserRepositoryStub, 'add')
+    await sut.add(mockUserParams())
+    expect(loadSpy).toHaveBeenCalledWith({
+      ...mockUserParams(),
+      password: 'hashed_value'
+    })
   })
 })
