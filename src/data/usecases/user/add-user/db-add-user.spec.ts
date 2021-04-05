@@ -50,4 +50,11 @@ describe('AddUser UseCase', () => {
     const user = await sut.add(mockUserParams())
     expect(user).toBe(null)
   })
+  test('Should throw if loadUserByEmailAndApplicationRepositoryStub throws', async () => {
+    const { sut, loadUserByEmailAndApplicationRepositoryStub } = mockSut()
+
+    jest.spyOn(loadUserByEmailAndApplicationRepositoryStub, 'loadUserByEmailAndApplication').mockRejectedValueOnce(new Error())
+    const promise = sut.add(mockUserParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
