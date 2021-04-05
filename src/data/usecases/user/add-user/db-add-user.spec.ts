@@ -2,7 +2,7 @@ import { Hasher } from '@/data/protocols/criptography/hasher'
 import { LoadUserByEmailAndApplicationRepository } from '@/data/protocols/db/user/load-user-by-email-and-application-repository'
 import { mockHasher } from '@/data/test/mock-criptography'
 import { mockLoadUserByEmailAndApplicationRepository } from '@/data/test/mock-db-user'
-import { mockUserParams } from '@/domain/test/mock-user'
+import { mockUserModel, mockUserParams } from '@/domain/test/mock-user'
 import { DbAddUser } from './db-add-user'
 
 type SutTypes = {
@@ -37,11 +37,17 @@ describe('AddUser UseCase', () => {
     const promise = sut.add(mockUserParams())
     await expect(promise).rejects.toThrow()
   })
-  test('Should call LoadUserByEmailAndApplicationRepository with values', async () => {
+  test('Should call LoadUserByEmailAndApplicationRepository with correct values', async () => {
     const { sut, loadUserByEmailAndApplicationRepositoryStub } = mockSut()
 
     const loadSpy = jest.spyOn(loadUserByEmailAndApplicationRepositoryStub, 'loadUserByEmailAndApplication')
     await sut.add(mockUserParams())
     expect(loadSpy).toHaveBeenCalledWith(mockUserParams().email, mockUserParams().application)
+  })
+  test('Should return null if LoadAccountByEmailRepository returns an account', async () => {
+    const { sut, loadUserByEmailAndApplicationRepositoryStub } = mockSut()
+    jest.spyOn(loadUserByEmailAndApplicationRepositoryStub, 'loadUserByEmailAndApplication').mockResolvedValueOnce(mockUserModel())
+    const user = await sut.add(mockUserParams())
+    expect(user).toBe(null)
   })
 })
