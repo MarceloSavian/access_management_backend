@@ -67,7 +67,9 @@ describe('AddUser UseCase', () => {
     const loadSpy = jest.spyOn(addUserRepositoryStub, 'add')
     await sut.add(mockUserParams())
     expect(loadSpy).toHaveBeenCalledWith({
-      ...mockUserParams(),
+      name: mockUserParams().name,
+      email: mockUserParams().email,
+      application: mockUserParams().application,
       password: 'hashed_value'
     })
   })

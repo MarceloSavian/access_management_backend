@@ -15,11 +15,13 @@ export class DbAddUser implements AddUser {
     const searchUser = await this.loadUserByEmailAndApplicationRepository.loadUserByEmailAndApplication(user.email, user.application)
     if (searchUser) return null
 
-    const hashedPassowrd = await this.hasher.hash(user.password)
+    const hashedPassword = await this.hasher.hash(user.password)
 
     await this.addUserRepository.add({
-      ...user,
-      password: hashedPassowrd
+      name: user.name,
+      email: user.email,
+      application: user.application,
+      password: hashedPassword
     })
 
     return await this.loadUserByEmailAndApplicationRepository.loadUserByEmailAndApplication(user.email, user.application)
