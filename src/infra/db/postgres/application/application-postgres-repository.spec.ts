@@ -15,7 +15,7 @@ const mockSut = (): SutTypes => {
   }
 }
 
-const insertApplication = async (): Promise<number> => {
+export const insertApplication = async (): Promise<number> => {
   const query = await (await postgresHelper.getQueryBuilder(Application, tableName))
     .insert()
     .into(tableName)

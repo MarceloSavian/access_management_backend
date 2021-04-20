@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
+import { User } from '../user/user.entity'
 
 @Entity('applications')
 export class Application {
@@ -16,4 +17,7 @@ export class Application {
 
   @Column('date')
   updatedAt: Date
+
+  @ManyToOne(() => User, user => user.application)
+  users: User[]
 }
