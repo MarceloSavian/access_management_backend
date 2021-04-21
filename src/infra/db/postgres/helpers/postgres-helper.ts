@@ -20,7 +20,7 @@ export const postgresHelper = {
   },
   async getQueryBuilder (entity?: EntityTarget<EntitySchema>, alias?: string): Promise<SelectQueryBuilder<EntitySchema> | SelectQueryBuilder<any>> {
     let connection = getConnection()
-    if (!connection?.isConnected) {
+    if (!connection.isConnected) {
       await this.connect(String(process.env.DATABASE_URL))
       connection = getConnection()
     }

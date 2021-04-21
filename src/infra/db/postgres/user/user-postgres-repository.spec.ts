@@ -52,6 +52,10 @@ describe('UserPostgresRepository', () => {
         .select().from(User, 'users').execute()
       user = user[0]
       expect(user.id).toBeTruthy()
+      expect(user.applicationId).toBeTruthy()
+      expect(user.name).toBe(mockUserParams().name)
+      expect(user.password).toBe(mockUserParams().password)
+      expect(user.email).toBe(mockUserParams().email)
     })
   })
 })
