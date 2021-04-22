@@ -39,10 +39,6 @@ describe('UserPostgresRepository', () => {
   afterAll(async () => {
     await postgresHelper.disconnect()
   })
-  afterEach(async () => {
-    await (await postgresHelper.getQueryBuilder())
-      .delete().from(User, 'users').execute()
-  })
   beforeEach(async () => {
     const appCollection = await postgresHelper.getQueryBuilder(Application, 'applications')
     await appCollection.softDelete()
