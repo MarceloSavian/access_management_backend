@@ -7,7 +7,7 @@ import { EntitySchema, SelectQueryBuilder } from 'typeorm'
 
 let applicationCollection: SelectQueryBuilder<EntitySchema>
 
-describe('Auth routes', () => {
+describe('Application routes', () => {
   beforeAll(() => {
     MockDate.set(new Date())
   })
