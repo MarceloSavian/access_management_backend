@@ -13,6 +13,7 @@ export class DbAddUser implements AddUser {
 
   async add (user: AddUserParams): Promise<UserModel | null> {
     const searchUser = await this.loadUserByEmailAndApplicationRepository.loadUserByEmailAndApplication(user.email, user.application)
+    console.log(searchUser)
     if (searchUser) return null
 
     const hashedPassword = await this.hasher.hash(user.password)

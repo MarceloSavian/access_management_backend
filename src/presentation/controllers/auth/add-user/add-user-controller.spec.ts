@@ -1,6 +1,7 @@
 import { mockUserModel } from '@/domain/test/mock-user'
 import { AddUser } from '@/domain/usecases/user/add-user'
-import { badRequest, ok, serverError } from '@/presentation/helpers/http/http-helper'
+import { EmailInUseError } from '@/presentation/errors/email-in-use-error'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validation } from '@/presentation/protocols/validation'
 import { mockAddUser } from '@/presentation/test/mock-add-user'
@@ -54,6 +55,13 @@ describe('AddApplication Controller', () => {
     const httpRequest = mockRequest()
     await sut.handle(httpRequest)
     expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+  test('Should retrun 403 if AddUser returns null', async () => {
+    const { sut, addUserStub } = mockSut()
+    jest.spyOn(addUserStub, 'add').mockResolvedValueOnce(null)
+    const httpRequest = mockRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(forbidden(new EmailInUseError()))
   })
   test('Should return 500 if AddApplication throws', async () => {
     const { sut, addUserStub } = mockSut()
