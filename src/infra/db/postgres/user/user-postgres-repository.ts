@@ -30,6 +30,6 @@ export class UserRepository implements AddUserRepository, LoadUserByEmailAndAppl
       .andWhere('users.applicationId = :application', { application })
       .getOne()
 
-    return { ...user, applicationId: application }
+    return user
   }
 }
