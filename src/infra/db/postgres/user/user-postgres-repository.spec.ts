@@ -43,6 +43,12 @@ describe('UserPostgresRepository', () => {
     await (await postgresHelper.getQueryBuilder())
       .delete().from(User, 'users').execute()
   })
+  beforeEach(async () => {
+    const appCollection = await postgresHelper.getQueryBuilder(Application, 'applications')
+    await appCollection.softDelete()
+    const userCollection = await postgresHelper.getQueryBuilder(User, 'users')
+    await userCollection.softDelete()
+  })
   describe('add', () => {
     test('Should insert an user on success', async () => {
       const { sut } = mockSut()

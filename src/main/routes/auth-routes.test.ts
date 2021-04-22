@@ -7,6 +7,7 @@ import app from '../config/app'
 import { Application } from '@/infra/db/postgres/application/application.entity'
 
 let userCollection: SelectQueryBuilder<EntitySchema>
+let appCollection: SelectQueryBuilder<EntitySchema>
 
 export const insertApplication = async (): Promise<number> => {
   const query = await (await postgresHelper.getQueryBuilder(Application, 'applications'))
@@ -33,10 +34,11 @@ describe('Auth routes', () => {
     await postgresHelper.disconnect()
   })
   beforeEach(async () => {
-    userCollection = await postgresHelper.getQueryBuilder(Application, 'applications')
-    await userCollection.delete().from(User).execute()
+    appCollection = await postgresHelper.getQueryBuilder(Application, 'applications')
+    await appCollection.softDelete()
+    userCollection = await postgresHelper.getQueryBuilder(User, 'users')
+    await userCollection.softDelete()
   })
-
   describe('POST /signup', () => {
     test('Should return 200 on applications', async () => {
       const id = await insertApplication()

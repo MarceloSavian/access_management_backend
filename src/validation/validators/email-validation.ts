@@ -3,7 +3,10 @@ import { InvalidParamError } from '../../presentation/errors'
 import { Validation } from '../../presentation/protocols/validation'
 
 export class EmailValidation implements Validation {
-  constructor (private readonly emailValidator: EmailValidatorAdapter, private readonly fieldName: string) { }
+  constructor (
+    private readonly emailValidator: EmailValidatorAdapter,
+    private readonly fieldName: string
+  ) { }
 
   validate (input: any): Error | null {
     if (!this.emailValidator.isValid(input[this.fieldName])) {

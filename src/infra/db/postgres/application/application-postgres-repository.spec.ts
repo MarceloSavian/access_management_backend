@@ -45,6 +45,10 @@ describe('ApplicationRepository', () => {
   afterAll(async () => {
     await postgresHelper.disconnect()
   })
+  beforeEach(async () => {
+    const appCollection = await postgresHelper.getQueryBuilder(Application, 'applications')
+    await appCollection.softDelete()
+  })
   describe('Add()', () => {
     test('Should return an application on success', async () => {
       const { sut } = mockSut()

@@ -22,9 +22,8 @@ describe('Application routes', () => {
   })
   beforeEach(async () => {
     applicationCollection = await postgresHelper.getQueryBuilder(Application, 'applications')
-    await applicationCollection.delete().from(Application).execute()
+    await applicationCollection.softDelete()
   })
-
   describe('POST /applications', () => {
     test('Should return 200 on applications', async () => {
       await request(app)
