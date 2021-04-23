@@ -5,6 +5,7 @@ executors:
       IMAGE_NAME: marcelosavian/accessmanagement
       VERSION: 0.1.0 
       DEBUG_PG_DOCKER: true
+      DB: postgresql://root@localhost/circle_test
     docker:
       - image: circleci/node:12.4
 jobs:
@@ -17,7 +18,11 @@ jobs:
       - run: npm install
       - run: npm run lint
   test:
-    executor: docker-publisher
+    docker:
+      - image: circleci/postgres:10.6-alpine
+      auth:
+        username: $DOCKERHUB_USERNAME-user
+        password: $DOCKERHUB_PASS  # context / project UI env-var reference
     working_directory: ~/repo
     steps:
       - checkout
