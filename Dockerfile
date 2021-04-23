@@ -1,5 +1,5 @@
 # pull official base image
-FROM node:12.18.3-alpine
+FROM node:15
 
 
 RUN apk --no-cache add --virtual builds-deps build-base python
