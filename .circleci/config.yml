@@ -4,6 +4,7 @@ executors:
     environment:
       IMAGE_NAME: marcelosavian/accessmanagement
       VERSION: 0.1.0 
+      DEBUG_PG_DOCKER: true
     docker:
       - image: circleci/node:12.4
 jobs:
