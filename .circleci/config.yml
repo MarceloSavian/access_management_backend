@@ -65,12 +65,14 @@ workflows:
       - build:
           filters:
             branches:
-              - main
-              - under_test
+              only:
+                - main
+                - under_test
       - publish-latest:
           requires:
             - build
           filters:
             branches:
-              - main
-              - under_test
+              only:
+                - main
+                - under_test
