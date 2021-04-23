@@ -5,11 +5,11 @@ executors:
       IMAGE_NAME: marcelosavian/accessmanagement
       VERSION: 0.1.0 
     docker:
-      - image: circleci/node:12.4
+      - image: circleci/node:15
 jobs:
   lint:
     docker:
-      - image: circleci/node:12.4
+      - image: circleci/node:15
     working_directory: ~/repo
     steps:
       - checkout
@@ -17,7 +17,7 @@ jobs:
       - run: npm run lint
   test:
     docker:
-      - image: circleci/node:12.4
+      - image: circleci/node:15
     working_directory: ~/repo
     steps:
       - checkout
